@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@core/auth/auth.service';
-import { LoginDto } from '@features/auth/models/auth.dto';
+import { LoginDto } from '@app/api/generated';
 
 @Component({
   selector: 'app-login',
@@ -62,7 +62,6 @@ export class LoginComponent {
     const dto: LoginDto = {
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!,
-      rememberMe: this.loginForm.value.rememberMe!,
     };
 
     this.authService
@@ -79,9 +78,17 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading.set(false);
-          const message =
-            error.error?.message ||
-            'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
+
+          let message = 'Une erreur est survenue lors de la connexion';
+
+          if (error.status === 401) {
+            message = 'Email ou mot de passe incorrect';
+          } else if (error.status === 0) {
+            message = 'Impossible de contacter le serveur';
+          } else if (error.error?.message) {
+            message = error.error.message;
+          }
+
           this.errorMessage.set(message);
           this.snackBar.open(message, 'Fermer', {
             duration: 5000,

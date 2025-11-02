@@ -1,9 +1,9 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '@environments/environment';
-import { LoginDto, RegisterDto, AuthResponseDto } from '@features/auth/models/auth.dto';
+import { AuthService as ApiAuthService } from '@app/api/generated';
+import { LoginDto, RegisterDto } from '@app/api/generated';
 
 export interface AuthUser {
   id: string;
@@ -14,13 +14,23 @@ export interface AuthUser {
   organizationId: string;
 }
 
+interface LoginResponse {
+  access_token: string;
+  user: AuthUser;
+}
+
+interface RegisterResponse {
+  access_token: string;
+  user: AuthUser;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   // Services injectés avec inject()
-  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly apiAuthService = inject(ApiAuthService);
 
   // State avec signals
   private readonly currentUserSignal = signal<AuthUser | null>(null);
@@ -45,11 +55,11 @@ export class AuthService {
 
   /**
    * Connexion
-   * Appelle le endpoint /auth/login du backend
+   * Appelle le endpoint /auth/login via l'API client générée
    */
-  login(dto: LoginDto): Observable<AuthResponseDto> {
-    return this.http.post<AuthResponseDto>(`${environment.apiUrl}/auth/login`, dto).pipe(
-      tap((response) => {
+  login(dto: LoginDto): Observable<LoginResponse> {
+    return this.apiAuthService.authControllerLogin(dto).pipe(
+      tap((response: LoginResponse) => {
         this.saveToken(response.access_token);
         this.saveUser(response.user);
         this.router.navigate(['/app/dashboard']);
@@ -59,11 +69,11 @@ export class AuthService {
 
   /**
    * Inscription
-   * Appelle le endpoint /auth/register du backend
+   * Appelle le endpoint /auth/register via l'API client générée
    */
-  register(dto: RegisterDto): Observable<AuthResponseDto> {
-    return this.http.post<AuthResponseDto>(`${environment.apiUrl}/auth/register`, dto).pipe(
-      tap((response) => {
+  register(dto: RegisterDto): Observable<RegisterResponse> {
+    return this.apiAuthService.authControllerRegister(dto).pipe(
+      tap((response: RegisterResponse) => {
         this.saveToken(response.access_token);
         this.saveUser(response.user);
         this.router.navigate(['/app/dashboard']);

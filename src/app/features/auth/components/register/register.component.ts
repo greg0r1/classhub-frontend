@@ -11,7 +11,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@core/auth/auth.service';
-import { RegisterDto } from '@features/auth/models/auth.dto';
+import { RegisterDto } from '@app/api/generated';
 
 @Component({
   selector: 'app-register',
