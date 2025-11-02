@@ -2,11 +2,11 @@
 // CLASSHUB - STYLES GLOBAUX
 // ============================================
 
+// Import Angular Material Theme (doit être AVANT @import)
+@use '@angular/material' as mat;
+
 // Import Design System Tokens
 @import 'styles/tokens';
-
-// Import Angular Material Theme
-@use '@angular/material' as mat;
 
 // ============================================
 // MATERIAL THEME CONFIGURATION
