@@ -12,8 +12,11 @@
 // MATERIAL THEME CONFIGURATION
 // ============================================
 
+// Include Material core styles
+@include mat.core();
+
 // Define custom Material palette using our tokens
-$classhub-primary: mat.define-palette((
+$classhub-primary: mat.m2-define-palette((
   50: $primary-50,
   100: $primary-100,
   200: $primary-200,
@@ -38,7 +41,7 @@ $classhub-primary: mat.define-palette((
   )
 ));
 
-$classhub-accent: mat.define-palette((
+$classhub-accent: mat.m2-define-palette((
   50: $accent-50,
   100: $accent-100,
   200: $accent-200,
@@ -63,7 +66,7 @@ $classhub-accent: mat.define-palette((
   )
 ));
 
-$classhub-warn: mat.define-palette((
+$classhub-warn: mat.m2-define-palette((
   50: #ffebee,
   100: #ffcdd2,
   200: #ef9a9a,
@@ -89,13 +92,13 @@ $classhub-warn: mat.define-palette((
 ));
 
 // Create the theme
-$classhub-theme: mat.define-light-theme((
+$classhub-theme: mat.m2-define-light-theme((
   color: (
     primary: $classhub-primary,
     accent: $classhub-accent,
     warn: $classhub-warn,
   ),
-  typography: mat.define-typography-config(
+  typography: mat.m2-define-typography-config(
     $font-family: $font-family-primary,
   ),
   density: 0,
