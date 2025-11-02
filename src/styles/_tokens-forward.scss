@@ -1,0 +1,7 @@
+// ============================================
+// TOKENS FORWARD MODULE
+// ============================================
+// Ce fichier permet d'utiliser @use au lieu de @import
+// pour éviter l'avertissement de dépréciation SCSS
+
+@forward 'tokens';
