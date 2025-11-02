@@ -141,3 +141,49 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use conventional commit format: `feat:`, `fix:`, `refactor:`, etc.
 - Create feature branches for new functionality
 - Never commit `.env` files or secrets
+
+### UI/UX Architecture
+
+- Use the Design System tokens from `src/styles/_tokens.scss`
+- All UI components must be in `shared/components/` and be presentational only
+- Smart components in `features/` compose UI components with business logic
+- Never mix business logic with UI rendering in the same component
+- Use Angular Material as base, extend with custom styles
+- All custom components must follow the atomic design pattern (atoms, molecules, organisms)
+- Ensure WCAG AA accessibility compliance (contrast, aria labels, keyboard navigation)
+- Follow the complete design specifications in `UI_UX_GUIDELINES.md`
+
+```
+
+**Puis, quand vous codez avec Claude, dites-lui :**
+```
+
+"Crée-moi un composant Button en suivant UI_UX_GUIDELINES.md"
+"Style ce composant en utilisant les tokens de \_tokens.scss"
+
+```
+
+---
+
+## 🎨 Aperçu du Design System
+
+### Couleurs
+
+- **Primary** : Indigo (#3f51b5) - Actions principales, liens
+- **Accent** : Pink (#e91e63) - Highlights, badges
+- **Success** : Green (#4caf50) - Statuts positifs
+- **Warning** : Orange (#ff9800) - Alertes
+- **Error** : Red (#f44336) - Erreurs
+
+### Architecture des Composants
+```
+
+atoms/ → button, badge, icon, spinner
+↓
+molecules/ → stat-card, search-bar, form-field
+↓
+organisms/ → navbar, data-table, user-card
+↓
+templates/ → main-layout, auth-layout
+↓
+pages/ → dashboard, user-list, course-detail
