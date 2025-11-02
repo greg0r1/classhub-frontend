@@ -640,7 +640,7 @@ a {
 }
 
 // Mobile only
-@media (max-width: $breakpoint-md - 1) {
+@media (max-width: calc(#{$breakpoint-md} - 1px)) {
   .hide-mobile {
     display: none !important;
   }
