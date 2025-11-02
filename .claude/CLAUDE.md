@@ -144,14 +144,16 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ### UI/UX Architecture
 
-- Use the Design System tokens from `src/styles/_tokens.scss`
+- **IMPORTANT**: Use the Design System tokens from `src/styles/_tokens.scss` for ALL styling
+- Consult `DESIGN_SYSTEM.md` for complete documentation and usage examples
 - All UI components must be in `shared/components/` and be presentational only
 - Smart components in `features/` compose UI components with business logic
 - Never mix business logic with UI rendering in the same component
-- Use Angular Material as base, extend with custom styles
+- Use Angular Material as base, extend with custom styles using tokens
 - All custom components must follow the atomic design pattern (atoms, molecules, organisms)
 - Ensure WCAG AA accessibility compliance (contrast, aria labels, keyboard navigation)
-- Follow the complete design specifications in `UI_UX_GUIDELINES.md`
+- Use mixins from tokens: `@include card`, `@include respond-to('md')`, etc.
+- Always import tokens in component styles: `@import 'tokens';`
 
 ```
 
