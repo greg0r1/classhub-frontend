@@ -1,7 +1,9 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '@environments/environment';
+import { LoginDto, RegisterDto, AuthResponseDto } from '@features/auth/models/auth.dto';
 
 export interface AuthUser {
   id: string;
@@ -17,6 +19,7 @@ export interface AuthUser {
 })
 export class AuthService {
   // Services injectés avec inject()
+  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
   // State avec signals
@@ -42,27 +45,30 @@ export class AuthService {
 
   /**
    * Connexion
-   * TODO: À remplacer par l'appel au service API généré après exécution de npm run api
+   * Appelle le endpoint /auth/login du backend
    */
-  login(email: string, password: string): Observable<any> {
-    // Cette méthode sera remplacée par l'appel au AuthService généré
-    // return this.apiAuthService.authControllerLogin({ email, password }).pipe(
-    //   tap((response) => {
-    //     this.saveToken(response.access_token);
-    //     this.saveUser(response.user);
-    //     this.router.navigate(['/app/dashboard']);
-    //   })
-    // );
-    throw new Error('Méthode non implémentée. Générez d\'abord le client API avec: npm run api');
+  login(dto: LoginDto): Observable<AuthResponseDto> {
+    return this.http.post<AuthResponseDto>(`${environment.apiUrl}/auth/login`, dto).pipe(
+      tap((response) => {
+        this.saveToken(response.access_token);
+        this.saveUser(response.user);
+        this.router.navigate(['/app/dashboard']);
+      })
+    );
   }
 
   /**
    * Inscription
-   * TODO: À remplacer par l'appel au service API généré après exécution de npm run api
+   * Appelle le endpoint /auth/register du backend
    */
-  register(data: any): Observable<any> {
-    // Cette méthode sera remplacée par l'appel au AuthService généré
-    throw new Error('Méthode non implémentée. Générez d\'abord le client API avec: npm run api');
+  register(dto: RegisterDto): Observable<AuthResponseDto> {
+    return this.http.post<AuthResponseDto>(`${environment.apiUrl}/auth/register`, dto).pipe(
+      tap((response) => {
+        this.saveToken(response.access_token);
+        this.saveUser(response.user);
+        this.router.navigate(['/app/dashboard']);
+      })
+    );
   }
 
   /**

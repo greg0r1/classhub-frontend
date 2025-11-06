@@ -1,0 +1,189 @@
+@use 'tokens' as *;
+
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  padding: $spacing-lg;
+
+  @include respond-to('sm') {
+    padding: $spacing-md;
+  }
+}
+
+.register-card {
+  @include card;
+  width: 100%;
+  max-width: 600px;
+  padding: $spacing-xl;
+
+  @include respond-to('sm') {
+    padding: $spacing-lg;
+  }
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  .app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-primary;
+    margin: 0 0 $spacing-sm 0;
+  }
+
+  .app-subtitle {
+    font-size: 1rem;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+
+  .full-width {
+    width: 100%;
+  }
+
+  .form-row {
+    display: flex;
+    gap: $spacing-md;
+
+    @include respond-to('sm') {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+
+    .half-width {
+      flex: 1;
+      width: 100%;
+    }
+  }
+}
+
+.password-strength {
+  margin-top: -$spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  .password-strength-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $spacing-xs;
+    font-size: 0.875rem;
+
+    .password-strength-label {
+      color: $color-text-secondary;
+    }
+
+    .password-strength-value {
+      font-weight: 600;
+
+      &.strength-warn {
+        color: $color-error;
+      }
+
+      &.strength-accent {
+        color: $color-warning;
+      }
+
+      &.strength-primary {
+        color: $color-success;
+      }
+    }
+  }
+
+  mat-progress-bar {
+    height: 6px;
+    border-radius: $border-radius-sm;
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background-color: $color-error-light;
+  color: $color-error;
+  border-radius: $border-radius-md;
+  font-size: 0.875rem;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.stepper-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+
+  button {
+    min-width: 120px;
+
+    &[type='submit'] {
+      mat-spinner {
+        display: inline-block;
+        margin-right: $spacing-sm;
+      }
+    }
+  }
+}
+
+.register-footer {
+  text-align: center;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $color-border;
+
+  p {
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: 0.875rem;
+  }
+
+  .login-link {
+    color: $color-primary;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Personnalisation du stepper Material
+::ng-deep {
+  .mat-stepper-horizontal {
+    margin-bottom: $spacing-lg;
+  }
+
+  .mat-step-header {
+    padding: $spacing-sm $spacing-md;
+
+    @include respond-to('sm') {
+      padding: $spacing-xs $spacing-sm;
+    }
+
+    .mat-step-icon {
+      background-color: $color-primary;
+    }
+
+    .mat-step-label {
+      @include respond-to('sm') {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

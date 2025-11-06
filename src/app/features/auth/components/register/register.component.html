@@ -1,0 +1,185 @@
+<div class="register-container">
+  <div class="register-card">
+    <!-- Logo et titre -->
+    <div class="register-header">
+      <h1 class="app-title">ClassHub</h1>
+      <p class="app-subtitle">Créez votre compte</p>
+    </div>
+
+    <!-- Stepper -->
+    <mat-stepper #stepper linear>
+      <!-- Step 1: Informations personnelles -->
+      <mat-step [stepControl]="personalInfoForm" label="Informations personnelles">
+        <form [formGroup]="personalInfoForm" class="register-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Prénom</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                placeholder="Jean"
+                autocomplete="given-name"
+              />
+              <mat-icon matPrefix>person</mat-icon>
+              @if (firstNameControl?.invalid && firstNameControl?.touched) {
+                <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Nom</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                placeholder="Dupont"
+                autocomplete="family-name"
+              />
+              @if (lastNameControl?.invalid && lastNameControl?.touched) {
+                <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="jean.dupont@example.com"
+              autocomplete="email"
+            />
+            <mat-icon matPrefix>email</mat-icon>
+            @if (emailControl?.invalid && emailControl?.touched) {
+              <mat-error>{{ getErrorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Téléphone (optionnel)</mat-label>
+            <input
+              matInput
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="+33 6 12 34 56 78"
+              autocomplete="tel"
+            />
+            <mat-icon matPrefix>phone</mat-icon>
+            @if (phoneControl?.invalid && phoneControl?.touched) {
+              <mat-error>{{ getErrorMessage('phoneNumber') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="stepper-actions">
+            <button mat-raised-button color="primary" matStepperNext type="button">
+              Suivant
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 2: Mot de passe -->
+      <mat-step [stepControl]="passwordForm" label="Mot de passe">
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()" class="register-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mot de passe</mat-label>
+            <input
+              matInput
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Masquer le mot de passe'"
+            >
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (passwordControl?.invalid && passwordControl?.touched) {
+              <mat-error>{{ getPasswordErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Indicateur de force du mot de passe -->
+          @if (passwordControl?.value) {
+            <div class="password-strength">
+              <div class="password-strength-header">
+                <span class="password-strength-label">Force du mot de passe :</span>
+                <span class="password-strength-value" [class]="'strength-' + passwordStrengthColor()">
+                  {{ passwordStrengthLabel() }}
+                </span>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                [value]="passwordStrength()"
+                [color]="passwordStrengthColor()"
+              ></mat-progress-bar>
+            </div>
+          }
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmer le mot de passe</mat-label>
+            <input
+              matInput
+              [type]="hideConfirmPassword() ? 'password' : 'text'"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="'Masquer la confirmation'"
+            >
+              <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (confirmPasswordControl?.invalid && confirmPasswordControl?.touched) {
+              <mat-error>{{ getConfirmPasswordErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Message d'erreur global -->
+          @if (errorMessage()) {
+            <div class="error-message">
+              <mat-icon>error</mat-icon>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
+          <div class="stepper-actions">
+            <button mat-button matStepperPrevious type="button">Retour</button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="isLoading() || passwordForm.invalid"
+            >
+              @if (isLoading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+                <span>Inscription...</span>
+              } @else {
+                <span>S'inscrire</span>
+              }
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+
+    <!-- Lien de connexion -->
+    <div class="register-footer">
+      <p>
+        Vous avez déjà un compte ?
+        <a routerLink="/auth/login" class="login-link">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -71,6 +71,18 @@ $color-surface: #ffffff;
 $color-divider: $gray-200;
 $color-border: $gray-300;
 
+// Main Color Aliases (for easier usage)
+$color-primary: $primary-500;
+$color-primary-light: $primary-100;
+$color-primary-dark: $primary-700;
+$color-accent: $accent-500;
+$color-success: $success-main;
+$color-success-light: $success-light;
+$color-warning: $warning-main;
+$color-error: $error-main;
+$color-error-light: $error-light;
+$color-info: $info-main;
+
 // ============================================
 // TYPOGRAPHY
 // ============================================
@@ -123,6 +135,14 @@ $spacing-12: 3rem;    // 48px
 $spacing-16: 4rem;    // 64px
 $spacing-20: 5rem;    // 80px
 $spacing-24: 6rem;    // 96px
+
+// Spacing Aliases (for easier usage)
+$spacing-xs: $spacing-1;   // 4px
+$spacing-sm: $spacing-2;   // 8px
+$spacing-md: $spacing-4;   // 16px
+$spacing-lg: $spacing-6;   // 24px
+$spacing-xl: $spacing-8;   // 32px
+$spacing-2xl: $spacing-12; // 48px
 
 // ============================================
 // BORDER RADIUS
