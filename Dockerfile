@@ -13,7 +13,7 @@ RUN npm ci --legacy-peer-deps
 COPY . .
 
 # Build the application for production
-RUN npm run build --prod
+RUN npm run build -- --configuration production
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
