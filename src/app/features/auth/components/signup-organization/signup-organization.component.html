@@ -303,11 +303,15 @@
               class="submit-button"
             >
               @if (isLoading()) {
-                <mat-spinner diameter="20"></mat-spinner>
-                <span>Création...</span>
+                <ng-container>
+                  <mat-spinner diameter="20"></mat-spinner>
+                  <span>Création...</span>
+                </ng-container>
               } @else {
-                <mat-icon>check_circle</mat-icon>
-                <span>Créer mon club</span>
+                <ng-container>
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Créer mon club</span>
+                </ng-container>
               }
             </button>
           </div>
