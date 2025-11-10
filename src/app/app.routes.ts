@@ -5,7 +5,7 @@ export const routes: Routes = [
   // Redirection par défaut
   {
     path: '',
-    redirectTo: '/auth/login',
+    redirectTo: '/auth',
     pathMatch: 'full',
   },
 

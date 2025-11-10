@@ -1,0 +1,351 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <!-- Header -->
+    <div class="signup-header">
+      <mat-icon class="header-icon">business</mat-icon>
+      <h1 class="app-title">Créer mon club</h1>
+      <p class="app-subtitle">Rejoignez ClassHub et gérez votre organisation en quelques clics</p>
+    </div>
+
+    <!-- Stepper with 3 steps -->
+    <mat-stepper #stepper linear>
+      <!-- ========== ÉTAPE 1 : Informations Organisation ========== -->
+      <mat-step [stepControl]="organizationForm" label="Votre organisation">
+        <form [formGroup]="organizationForm" class="signup-form">
+          <h2 class="step-title">Informations de votre club</h2>
+
+          <!-- Nom du club -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nom du club *</mat-label>
+            <input
+              matInput
+              formControlName="organizationName"
+              placeholder="Mon Club de Sport"
+              autocomplete="organization"
+            />
+            <mat-icon matPrefix>business</mat-icon>
+            @if (organizationForm.get('organizationName')?.invalid &&
+              organizationForm.get('organizationName')?.touched) {
+              <mat-error>{{ getErrorMessage(organizationForm, 'organizationName') }}</mat-error>
+            }
+            <mat-hint>Nom officiel de votre organisation</mat-hint>
+          </mat-form-field>
+
+          <!-- Slug -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Identifiant unique (slug) *</mat-label>
+            <input
+              matInput
+              formControlName="slug"
+              placeholder="mon-club-de-sport"
+              autocomplete="off"
+            />
+            <mat-icon matPrefix>link</mat-icon>
+            @if (organizationForm.get('slug')?.invalid && organizationForm.get('slug')?.touched) {
+              <mat-error>{{ getErrorMessage(organizationForm, 'slug') }}</mat-error>
+            }
+            <mat-hint>
+              URL de votre club : classhub.fr/{{ organizationForm.get('slug')?.value || '...' }}
+            </mat-hint>
+          </mat-form-field>
+
+          <!-- Type de sport -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Type de sport *</mat-label>
+            <mat-select formControlName="sportType">
+              @for (sport of sportTypes; track sport) {
+                <mat-option [value]="sport">{{ sport }}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>sports_martial_arts</mat-icon>
+            @if (organizationForm.get('sportType')?.invalid &&
+              organizationForm.get('sportType')?.touched) {
+              <mat-error>Veuillez sélectionner un type de sport</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Email de contact -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email de contact *</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="contactEmail"
+              placeholder="contact@monclub.fr"
+              autocomplete="email"
+            />
+            <mat-icon matPrefix>email</mat-icon>
+            @if (organizationForm.get('contactEmail')?.invalid &&
+              organizationForm.get('contactEmail')?.touched) {
+              <mat-error>{{ getErrorMessage(organizationForm, 'contactEmail') }}</mat-error>
+            }
+            <mat-hint>Email public de votre club</mat-hint>
+          </mat-form-field>
+
+          <!-- Ville (optionnel) -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Ville (optionnel)</mat-label>
+            <input
+              matInput
+              formControlName="city"
+              placeholder="Paris"
+              autocomplete="address-level2"
+            />
+            <mat-icon matPrefix>location_city</mat-icon>
+          </mat-form-field>
+
+          <!-- Navigation -->
+          <div class="stepper-actions">
+            <button mat-button routerLink="/auth">Retour</button>
+            <button
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              type="button"
+              [disabled]="organizationForm.invalid"
+            >
+              Suivant
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- ========== ÉTAPE 2 : Compte Administrateur ========== -->
+      <mat-step [stepControl]="adminForm" label="Votre compte">
+        <form [formGroup]="adminForm" class="signup-form">
+          <h2 class="step-title">Créez votre compte administrateur</h2>
+
+          <div class="form-row">
+            <!-- Prénom -->
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Prénom *</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                placeholder="Jean"
+                autocomplete="given-name"
+              />
+              <mat-icon matPrefix>person</mat-icon>
+              @if (adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched) {
+                <mat-error>{{ getErrorMessage(adminForm, 'firstName') }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Nom -->
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Nom *</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                placeholder="Dupont"
+                autocomplete="family-name"
+              />
+              @if (adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched) {
+                <mat-error>{{ getErrorMessage(adminForm, 'lastName') }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <!-- Email admin -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Votre email *</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="adminEmail"
+              placeholder="jean.dupont@example.com"
+              autocomplete="email"
+            />
+            <mat-icon matPrefix>email</mat-icon>
+            @if (adminForm.get('adminEmail')?.invalid && adminForm.get('adminEmail')?.touched) {
+              <mat-error>{{ getErrorMessage(adminForm, 'adminEmail') }}</mat-error>
+            }
+            <mat-hint>Cet email sera utilisé pour vous connecter</mat-hint>
+          </mat-form-field>
+
+          <!-- Téléphone -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Téléphone (optionnel)</mat-label>
+            <input
+              matInput
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="+33 6 12 34 56 78"
+              autocomplete="tel"
+            />
+            <mat-icon matPrefix>phone</mat-icon>
+            @if (adminForm.get('phoneNumber')?.invalid && adminForm.get('phoneNumber')?.touched) {
+              <mat-error>{{ getErrorMessage(adminForm, 'phoneNumber') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Navigation -->
+          <div class="stepper-actions">
+            <button mat-button matStepperPrevious type="button">Retour</button>
+            <button
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              type="button"
+              [disabled]="adminForm.invalid"
+            >
+              Suivant
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- ========== ÉTAPE 3 : Mot de passe & Confirmation ========== -->
+      <mat-step [stepControl]="passwordForm" label="Sécurité">
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()" class="signup-form">
+          <h2 class="step-title">Sécurisez votre compte</h2>
+
+          <!-- Mot de passe -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mot de passe *</mat-label>
+            <input
+              matInput
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Masquer le mot de passe'"
+            >
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched) {
+              <mat-error>{{ getPasswordErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Indicateur de force -->
+          @if (passwordForm.get('password')?.value) {
+            <div class="password-strength">
+              <div class="password-strength-header">
+                <span class="password-strength-label">Force du mot de passe :</span>
+                <span class="password-strength-value" [class]="'strength-' + passwordStrength().color">
+                  {{ passwordStrength().label }}
+                </span>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                [value]="passwordStrength().score"
+                [color]="passwordStrength().color"
+              ></mat-progress-bar>
+            </div>
+          }
+
+          <!-- Confirmation mot de passe -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmer le mot de passe *</mat-label>
+            <input
+              matInput
+              [type]="hideConfirmPassword() ? 'password' : 'text'"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="'Masquer la confirmation'"
+            >
+              <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (passwordForm.get('confirmPassword')?.invalid &&
+              passwordForm.get('confirmPassword')?.touched) {
+              <mat-error>{{ getConfirmPasswordErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Acceptation des CGU -->
+          <div class="terms-section">
+            <mat-checkbox formControlName="acceptTerms">
+              Je reconnais avoir lu et j'accepte les
+              <a href="/cgu" target="_blank">Conditions Générales d'Utilisation</a>
+            </mat-checkbox>
+            @if (passwordForm.get('acceptTerms')?.invalid &&
+              passwordForm.get('acceptTerms')?.touched) {
+              <div class="error-message">
+                Vous devez accepter les CGU pour continuer
+              </div>
+            }
+          </div>
+
+          <!-- Message d'erreur global -->
+          @if (errorMessage()) {
+            <div class="error-message-global">
+              <mat-icon>error</mat-icon>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
+          <!-- Navigation & Submit -->
+          <div class="stepper-actions">
+            <button mat-button matStepperPrevious type="button">Retour</button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="isLoading() || passwordForm.invalid"
+              class="submit-button"
+            >
+              @if (isLoading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+                <span>Création...</span>
+              } @else {
+                <mat-icon>check_circle</mat-icon>
+                <span>Créer mon club</span>
+              }
+            </button>
+          </div>
+        </form>
+
+        <!-- Récapitulatif -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Récapitulatif</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="summary-item">
+              <strong>Club :</strong> {{ organizationForm.get('organizationName')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Sport :</strong> {{ organizationForm.get('sportType')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Ville :</strong> {{ organizationForm.get('city')?.value || 'Non renseignée' }}
+            </div>
+            <div class="summary-item">
+              <strong>Admin :</strong>
+              {{ adminForm.get('firstName')?.value }} {{ adminForm.get('lastName')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Email :</strong> {{ adminForm.get('adminEmail')?.value }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-step>
+    </mat-stepper>
+
+    <!-- Footer -->
+    <div class="signup-footer">
+      <p>
+        Vous avez déjà un compte ?
+        <a routerLink="/auth/login" class="login-link">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>
