@@ -45,6 +45,7 @@ export class RegisterComponent {
 
   // Step 1: Informations personnelles
   readonly personalInfoForm = this.fb.group({
+    organizationName: ['', [Validators.required, Validators.minLength(2)]],
     firstName: ['', [Validators.required, Validators.minLength(2)]],
     lastName: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
@@ -139,12 +140,18 @@ export class RegisterComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
+    // TEMPORARY: Generate a UUID for the organization
+    // TODO: Le backend devrait créer l'organisation automatiquement ou fournir un endpoint dédié
+    const tempOrgId = crypto.randomUUID();
+
     const dto: RegisterDto = {
       email: this.personalInfoForm.value.email!,
       password: this.passwordForm.value.password!,
-      firstName: this.personalInfoForm.value.firstName!,
-      lastName: this.personalInfoForm.value.lastName!,
-      phoneNumber: this.personalInfoForm.value.phoneNumber || undefined,
+      first_name: this.personalInfoForm.value.firstName!,
+      last_name: this.personalInfoForm.value.lastName!,
+      phone: this.personalInfoForm.value.phoneNumber || undefined,
+      organization_id: tempOrgId, // TEMPORARY: UUID généré côté client
+      role: RegisterDto.RoleEnum.Member,
     };
 
     this.authService
@@ -190,6 +197,10 @@ export class RegisterComponent {
   /**
    * Getters pour la validation
    */
+  get organizationNameControl() {
+    return this.personalInfoForm.get('organizationName');
+  }
+
   get firstNameControl() {
     return this.personalInfoForm.get('firstName');
   }

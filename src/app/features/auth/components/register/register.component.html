@@ -11,6 +11,20 @@
       <!-- Step 1: Informations personnelles -->
       <mat-step [stepControl]="personalInfoForm" label="Informations personnelles">
         <form [formGroup]="personalInfoForm" class="register-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nom de votre organisation / club</mat-label>
+            <input
+              matInput
+              formControlName="organizationName"
+              placeholder="Mon Club de Sport"
+              autocomplete="organization"
+            />
+            <mat-icon matPrefix>business</mat-icon>
+            @if (organizationNameControl?.invalid && organizationNameControl?.touched) {
+              <mat-error>Le nom de l'organisation est requis (min. 2 caractères)</mat-error>
+            }
+          </mat-form-field>
+
           <div class="form-row">
             <mat-form-field appearance="outline" class="half-width">
               <mat-label>Prénom</mat-label>
