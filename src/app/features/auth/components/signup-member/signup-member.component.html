@@ -1,0 +1,186 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <!-- Header -->
+    <div class="signup-header">
+      <mat-icon class="header-icon">person_add</mat-icon>
+      <h1 class="app-title">Rejoins ton club</h1>
+      <p class="app-subtitle">Inscris-toi pour accéder à ton espace adhérent</p>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="signup-form">
+      <!-- Sélection organisation -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sélectionne ton club *</mat-label>
+        <mat-select formControlName="organizationId">
+          @for (org of organizations; track org.id) {
+            <mat-option [value]="org.id">
+              {{ org.name }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>business</mat-icon>
+        @if (memberForm.get('organizationId')?.invalid &&
+          memberForm.get('organizationId')?.touched) {
+          <mat-error>Veuillez sélectionner votre club</mat-error>
+        }
+        <mat-hint>Recherche et sélectionne ton club dans la liste</mat-hint>
+      </mat-form-field>
+
+      <!-- Prénom & Nom -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Prénom *</mat-label>
+          <input
+            matInput
+            formControlName="firstName"
+            placeholder="Jean"
+            autocomplete="given-name"
+          />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (memberForm.get('firstName')?.invalid && memberForm.get('firstName')?.touched) {
+            <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Nom *</mat-label>
+          <input
+            matInput
+            formControlName="lastName"
+            placeholder="Dupont"
+            autocomplete="family-name"
+          />
+          @if (memberForm.get('lastName')?.invalid && memberForm.get('lastName')?.touched) {
+            <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email *</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="jean.dupont@example.com"
+          autocomplete="email"
+        />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (memberForm.get('email')?.invalid && memberForm.get('email')?.touched) {
+          <mat-error>{{ getErrorMessage('email') }}</mat-error>
+        }
+        <mat-hint>Cet email sera utilisé pour te connecter</mat-hint>
+      </mat-form-field>
+
+      <!-- Mot de passe -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe *</mat-label>
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="'Masquer le mot de passe'"
+        >
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (memberForm.get('password')?.invalid && memberForm.get('password')?.touched) {
+          <mat-error>{{ getPasswordErrorMessage() }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Indicateur de force -->
+      @if (memberForm.get('password')?.value) {
+        <div class="password-strength">
+          <div class="password-strength-header">
+            <span class="password-strength-label">Force du mot de passe :</span>
+            <span class="password-strength-value" [class]="'strength-' + passwordStrength().color">
+              {{ passwordStrength().label }}
+            </span>
+          </div>
+          <mat-progress-bar
+            mode="determinate"
+            [value]="passwordStrength().score"
+            [color]="passwordStrength().color"
+          ></mat-progress-bar>
+        </div>
+      }
+
+      <!-- Confirmation mot de passe -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Confirmer le mot de passe *</mat-label>
+        <input
+          matInput
+          [type]="hideConfirmPassword() ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="toggleConfirmPasswordVisibility()"
+          [attr.aria-label]="'Masquer la confirmation'"
+        >
+          <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (memberForm.get('confirmPassword')?.invalid &&
+          memberForm.get('confirmPassword')?.touched) {
+          <mat-error>{{ getConfirmPasswordErrorMessage() }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Message d'erreur global -->
+      @if (errorMessage()) {
+        <div class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Bouton de soumission -->
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading() || memberForm.invalid"
+      >
+        @if (isLoading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Inscription...</span>
+        } @else {
+          <mat-icon>person_add</mat-icon>
+          <span>Rejoindre mon club</span>
+        }
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="signup-footer">
+      <p>
+        Tu as déjà un compte ?
+        <a routerLink="/auth/login" class="login-link">Se connecter</a>
+      </p>
+      <p class="separator">ou</p>
+      <p>
+        Tu es responsable d'un club ?
+        <a routerLink="/auth/signup/organization" class="create-club-link">
+          Créer mon club
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

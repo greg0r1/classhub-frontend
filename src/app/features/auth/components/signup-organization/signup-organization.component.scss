@@ -1,0 +1,266 @@
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+}
+
+.signup-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  width: 100%;
+  overflow: hidden;
+}
+
+// ==================== Header ====================
+.signup-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+
+  .header-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .app-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+}
+
+// ==================== Form ====================
+.signup-form {
+  padding: 2rem;
+
+  .step-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .half-width {
+      width: 100%;
+    }
+  }
+}
+
+// ==================== Password Strength ====================
+.password-strength {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+
+  .password-strength-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    .password-strength-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #666;
+    }
+
+    .password-strength-value {
+      font-size: 0.875rem;
+      font-weight: 600;
+
+      &.strength-warn {
+        color: #f44336;
+      }
+
+      &.strength-accent {
+        color: #ff9800;
+      }
+
+      &.strength-primary {
+        color: #4caf50;
+      }
+    }
+  }
+}
+
+// ==================== Terms ====================
+.terms-section {
+  margin-bottom: 1.5rem;
+
+  a {
+    color: #3f51b5;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .error-message {
+    color: #f44336;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
+
+// ==================== Error Message ====================
+.error-message-global {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #ffebee;
+  border-radius: 8px;
+  color: #c62828;
+  margin-bottom: 1.5rem;
+
+  mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// ==================== Stepper Actions ====================
+.stepper-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    min-width: 120px;
+
+    mat-icon {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .submit-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-spinner {
+      display: inline-block;
+    }
+  }
+}
+
+// ==================== Summary Card ====================
+.summary-card {
+  margin-top: 2rem;
+  background: #f8f9fa;
+
+  mat-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .summary-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: #666;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// ==================== Footer ====================
+.signup-footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+
+  p {
+    margin: 0;
+    color: #666;
+  }
+
+  .login-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ==================== Responsive ====================
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .signup-card {
+    max-width: 100%;
+  }
+
+  .signup-form {
+    padding: 1.5rem 1rem;
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .stepper-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// ==================== Stepper Customization ====================
+::ng-deep .mat-stepper-horizontal {
+  .mat-step-header {
+    padding: 1rem;
+
+    .mat-step-icon {
+      background-color: #667eea;
+    }
+
+    .mat-step-icon-selected {
+      background-color: #3f51b5;
+    }
+  }
+}
