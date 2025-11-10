@@ -159,11 +159,15 @@
         [disabled]="isLoading() || memberForm.invalid"
       >
         @if (isLoading()) {
-          <mat-spinner diameter="20"></mat-spinner>
-          <span>Inscription...</span>
+          <ng-container>
+            <mat-spinner diameter="20"></mat-spinner>
+            <span>Inscription...</span>
+          </ng-container>
         } @else {
-          <mat-icon>person_add</mat-icon>
-          <span>Rejoindre mon club</span>
+          <ng-container>
+            <mat-icon>person_add</mat-icon>
+            <span>Rejoindre mon club</span>
+          </ng-container>
         }
       </button>
     </form>
