@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.classhub.com',
+  apiUrl: '/api',
   appName: 'ClassHub',
   version: '1.0.0',
   jwt: {
