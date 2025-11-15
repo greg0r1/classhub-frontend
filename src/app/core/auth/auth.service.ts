@@ -14,14 +14,24 @@ export interface AuthUser {
   organizationId: string;
 }
 
+// Interface pour les données du backend (snake_case)
+interface BackendUser {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: 'admin' | 'coach' | 'member';
+  organization_id: string;
+}
+
 interface LoginResponse {
   access_token: string;
-  user: AuthUser;
+  user: BackendUser;
 }
 
 interface RegisterResponse {
   access_token: string;
-  user: AuthUser;
+  user: BackendUser;
 }
 
 @Injectable({
@@ -129,21 +139,47 @@ export class AuthService {
 
   /**
    * Sauvegarder l'utilisateur et mettre à jour le signal
+   * Transforme les données du backend (snake_case) vers le format frontend (camelCase)
    */
-  saveUser(user: AuthUser): void {
+  saveUser(userFromApi: BackendUser): void {
+    const user: AuthUser = {
+      id: userFromApi.id,
+      email: userFromApi.email,
+      firstName: userFromApi.first_name,
+      lastName: userFromApi.last_name,
+      role: userFromApi.role,
+      organizationId: userFromApi.organization_id,
+    };
     localStorage.setItem(environment.jwt.userKey, JSON.stringify(user));
     this.currentUserSignal.set(user);
   }
 
   /**
    * Charger l'utilisateur depuis le localStorage au démarrage
+   * Gère à la fois le format camelCase (nouveau) et snake_case (ancien)
    */
   private loadUserFromStorage(): void {
     const userStr = localStorage.getItem(environment.jwt.userKey);
     if (userStr && this.isTokenValid()) {
       try {
-        const user = JSON.parse(userStr);
+        const userData = JSON.parse(userStr);
+
+        // Transformer si les données sont en snake_case (ancien format)
+        const user: AuthUser = {
+          id: userData.id,
+          email: userData.email,
+          firstName: userData.firstName ?? userData.first_name,
+          lastName: userData.lastName ?? userData.last_name,
+          role: userData.role,
+          organizationId: userData.organizationId ?? userData.organization_id,
+        };
+
         this.currentUserSignal.set(user);
+
+        // Sauvegarder au nouveau format si c'était l'ancien
+        if (userData.first_name || userData.organization_id) {
+          localStorage.setItem(environment.jwt.userKey, JSON.stringify(user));
+        }
       } catch {
         this.logout();
       }
