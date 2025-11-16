@@ -184,8 +184,8 @@ export class CourseFiltersComponent {
 
   // FormGroup simple sans typage complexe
   readonly filterForm = this.fb.group({
-    startDate: [''],
-    endDate: [''],
+    startDate: [null],
+    endDate: [null],
     courseType: [''],
     status: [''],
   });
@@ -228,8 +228,8 @@ export class CourseFiltersComponent {
    */
   resetFilters(): void {
     this.filterForm.reset({
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
       courseType: '',
       status: '',
     });
