@@ -1,5 +1,5 @@
 import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
+
+interface CourseFiltersForm {
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
+  courseType: FormControl<string | null>;
+  status: FormControl<CourseStatus | null>;
+}
 
 @Component({
   selector: 'app-course-filters',
@@ -178,40 +185,38 @@ export class CourseFiltersComponent {
   // Variable pour afficher le debug
   readonly production = false; // Changez à true en production
 
-  // FormGroup pour les filtres
-  readonly filterForm = this.fb.group({
-    startDate: [''],
-    endDate: [''],
-    courseType: [''],
-    status: [''],
+  // FormGroup pour les filtres avec typage strict
+  readonly filterForm: FormGroup<CourseFiltersForm> = this.fb.group<CourseFiltersForm>({
+    startDate: this.fb.control<Date | null>(null),
+    endDate: this.fb.control<Date | null>(null),
+    courseType: this.fb.control<string | null>(null),
+    status: this.fb.control<CourseStatus | null>(null),
   });
 
   /**
    * Appliquer les filtres
    */
   applyFilters(): void {
-    const formValue = this.filterForm.value;
+    const formValue = this.filterForm.getRawValue();
     const filters: CourseFilters = {};
 
     console.log('📋 Valeurs brutes du formulaire:', formValue);
 
     // Ajouter uniquement les filtres avec des valeurs non vides
     if (formValue.startDate) {
-      // Le datepicker retourne déjà un objet Date
-      filters.startDate = formValue.startDate as Date;
+      filters.startDate = formValue.startDate;
       console.log('✅ Date début ajoutée:', formValue.startDate);
     }
     if (formValue.endDate) {
-      // Le datepicker retourne déjà un objet Date
-      filters.endDate = formValue.endDate as Date;
+      filters.endDate = formValue.endDate;
       console.log('✅ Date fin ajoutée:', formValue.endDate);
     }
     if (formValue.courseType && formValue.courseType !== '') {
-      filters.courseType = formValue.courseType as string;
+      filters.courseType = formValue.courseType;
       console.log('✅ Type cours ajouté:', formValue.courseType);
     }
     if (formValue.status && formValue.status !== '') {
-      filters.status = formValue.status as CourseStatus;
+      filters.status = formValue.status;
       console.log('✅ Statut ajouté:', formValue.status);
     }
 
@@ -224,10 +229,10 @@ export class CourseFiltersComponent {
    */
   resetFilters(): void {
     this.filterForm.reset({
-      startDate: '',
-      endDate: '',
-      courseType: '',
-      status: '',
+      startDate: null,
+      endDate: null,
+      courseType: null,
+      status: null,
     });
     console.log('🔄 Filtres réinitialisés');
     this.filtersChange.emit({});
