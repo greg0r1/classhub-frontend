@@ -28,6 +28,11 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
         title: 'Tableau de bord - ClassHub',
       },
+      {
+        path: 'courses',
+        loadChildren: () =>
+          import('./features/courses/courses.routes').then((m) => m.coursesRoutes),
+      },
       // Les autres routes seront ajoutées progressivement
       {
         path: '',
