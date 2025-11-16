@@ -260,6 +260,7 @@ export class CourseListComponent implements OnInit {
    * Gérer le changement de filtres
    */
   onFiltersChange(filters: CourseFilters): void {
+    console.log('onFiltersChange appelé avec:', filters);
     this.filters.set(filters);
     this.currentPage.set(1); // Retour à la première page
     this.loadCourses();

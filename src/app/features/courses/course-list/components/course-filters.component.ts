@@ -1,5 +1,6 @@
-import { Component, output, signal, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,6 +14,7 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
   selector: 'app-course-filters',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -56,7 +58,7 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
         <mat-form-field appearance="outline">
           <mat-label>Type de cours</mat-label>
           <mat-select formControlName="courseType">
-            <mat-option [value]="null">Tous les types</mat-option>
+            <mat-option value="">Tous les types</mat-option>
             <mat-option value="krav-maga">Krav Maga</mat-option>
             <mat-option value="yoga">Yoga</mat-option>
             <mat-option value="fitness">Fitness</mat-option>
@@ -69,7 +71,7 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
         <mat-form-field appearance="outline">
           <mat-label>Statut</mat-label>
           <mat-select formControlName="status">
-            <mat-option [value]="null">Tous les statuts</mat-option>
+            <mat-option value="">Tous les statuts</mat-option>
             <mat-option value="scheduled">Planifié</mat-option>
             <mat-option value="ongoing">En cours</mat-option>
             <mat-option value="completed">Terminé</mat-option>
@@ -89,6 +91,16 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
           </button>
         </div>
       </div>
+
+      <!-- Debug info (visible en dev) -->
+      @if (!production) {
+        <div class="debug-info">
+          <small>
+            <strong>Valeurs du formulaire:</strong>
+            {{ filterForm.value | json }}
+          </small>
+        </div>
+      }
     </form>
   `,
   styles: [
@@ -123,6 +135,19 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
         white-space: nowrap;
       }
 
+      .debug-info {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background-color: #fff3cd;
+        border-radius: 4px;
+        border: 1px solid #ffc107;
+      }
+
+      .debug-info small {
+        font-family: monospace;
+        color: #856404;
+      }
+
       @media (max-width: 768px) {
         .filters-row {
           flex-direction: column;
@@ -145,31 +170,52 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
   ],
 })
 export class CourseFiltersComponent {
+  private readonly fb = inject(FormBuilder);
+
   // Output pour émettre les filtres
-  filtersChange = output<CourseFilters>();
+  readonly filtersChange = output<CourseFilters>();
+
+  // Variable pour afficher le debug
+  readonly production = false; // Changez à true en production
 
   // FormGroup pour les filtres
-  filterForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.filterForm = this.fb.group({
-      startDate: [null],
-      endDate: [null],
-      courseType: [null],
-      status: [null],
-    });
-  }
+  readonly filterForm = this.fb.group({
+    startDate: [''],
+    endDate: [''],
+    courseType: [''],
+    status: [''],
+  });
 
   /**
    * Appliquer les filtres
    */
   applyFilters(): void {
-    const filters: CourseFilters = {
-      startDate: this.filterForm.value.startDate || undefined,
-      endDate: this.filterForm.value.endDate || undefined,
-      courseType: this.filterForm.value.courseType || undefined,
-      status: this.filterForm.value.status || undefined,
-    };
+    const formValue = this.filterForm.value;
+    const filters: CourseFilters = {};
+
+    console.log('📋 Valeurs brutes du formulaire:', formValue);
+
+    // Ajouter uniquement les filtres avec des valeurs non vides
+    if (formValue.startDate) {
+      // Le datepicker retourne déjà un objet Date
+      filters.startDate = formValue.startDate as Date;
+      console.log('✅ Date début ajoutée:', formValue.startDate);
+    }
+    if (formValue.endDate) {
+      // Le datepicker retourne déjà un objet Date
+      filters.endDate = formValue.endDate as Date;
+      console.log('✅ Date fin ajoutée:', formValue.endDate);
+    }
+    if (formValue.courseType && formValue.courseType !== '') {
+      filters.courseType = formValue.courseType as string;
+      console.log('✅ Type cours ajouté:', formValue.courseType);
+    }
+    if (formValue.status && formValue.status !== '') {
+      filters.status = formValue.status as CourseStatus;
+      console.log('✅ Statut ajouté:', formValue.status);
+    }
+
+    console.log('🎯 Filtres appliqués (envoyés):', filters);
     this.filtersChange.emit(filters);
   }
 
@@ -178,11 +224,12 @@ export class CourseFiltersComponent {
    */
   resetFilters(): void {
     this.filterForm.reset({
-      startDate: null,
-      endDate: null,
-      courseType: null,
-      status: null,
+      startDate: '',
+      endDate: '',
+      courseType: '',
+      status: '',
     });
+    console.log('🔄 Filtres réinitialisés');
     this.filtersChange.emit({});
   }
 }

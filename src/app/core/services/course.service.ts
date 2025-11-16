@@ -32,25 +32,45 @@ export class CourseService {
       .set('page', page.toString())
       .set('limit', limit.toString());
 
+    // Ajouter les filtres seulement s'ils ont une valeur
     if (filters?.startDate) {
-      params = params.set('start_date', filters.startDate.toISOString());
+      const dateStr = filters.startDate.toISOString();
+      params = params.set('start_date', dateStr);
+      console.log('Filtre start_date:', dateStr);
     }
     if (filters?.endDate) {
-      params = params.set('end_date', filters.endDate.toISOString());
+      const dateStr = filters.endDate.toISOString();
+      params = params.set('end_date', dateStr);
+      console.log('Filtre end_date:', dateStr);
     }
     if (filters?.coachId) {
       params = params.set('coach_id', filters.coachId);
+      console.log('Filtre coach_id:', filters.coachId);
     }
     if (filters?.courseType) {
       params = params.set('course_type', filters.courseType);
+      console.log('Filtre course_type:', filters.courseType);
     }
     if (filters?.status) {
       params = params.set('status', filters.status);
+      console.log('Filtre status:', filters.status);
     }
+
+    const url = `${this.apiUrl}?${params.toString()}`;
+    console.log('URL finale:', url);
 
     this.loading.set(true);
     return this.http.get<PaginatedResponse<Course>>(this.apiUrl, { params }).pipe(
-      tap(() => this.loading.set(false))
+      tap({
+        next: (response) => {
+          console.log('Réponse API:', response);
+          this.loading.set(false);
+        },
+        error: (error) => {
+          console.error('Erreur API:', error);
+          this.loading.set(false);
+        }
+      })
     );
   }
 
