@@ -65,7 +65,7 @@ interface CourseFiltersForm {
         <mat-form-field appearance="outline">
           <mat-label>Type de cours</mat-label>
           <mat-select formControlName="courseType">
-            <mat-option value="">Tous les types</mat-option>
+            <mat-option [value]="null">Tous les types</mat-option>
             <mat-option value="krav-maga">Krav Maga</mat-option>
             <mat-option value="yoga">Yoga</mat-option>
             <mat-option value="fitness">Fitness</mat-option>
@@ -78,7 +78,7 @@ interface CourseFiltersForm {
         <mat-form-field appearance="outline">
           <mat-label>Statut</mat-label>
           <mat-select formControlName="status">
-            <mat-option value="">Tous les statuts</mat-option>
+            <mat-option [value]="null">Tous les statuts</mat-option>
             <mat-option value="scheduled">Planifié</mat-option>
             <mat-option value="ongoing">En cours</mat-option>
             <mat-option value="completed">Terminé</mat-option>
@@ -202,7 +202,7 @@ export class CourseFiltersComponent {
 
     console.log('📋 Valeurs brutes du formulaire:', formValue);
 
-    // Ajouter uniquement les filtres avec des valeurs non vides
+    // Ajouter uniquement les filtres avec des valeurs non nulles
     if (formValue.startDate) {
       filters.startDate = formValue.startDate;
       console.log('✅ Date début ajoutée:', formValue.startDate);
@@ -211,11 +211,11 @@ export class CourseFiltersComponent {
       filters.endDate = formValue.endDate;
       console.log('✅ Date fin ajoutée:', formValue.endDate);
     }
-    if (formValue.courseType && formValue.courseType !== '') {
+    if (formValue.courseType) {
       filters.courseType = formValue.courseType;
       console.log('✅ Type cours ajouté:', formValue.courseType);
     }
-    if (formValue.status && formValue.status !== '') {
+    if (formValue.status) {
       filters.status = formValue.status;
       console.log('✅ Statut ajouté:', formValue.status);
     }
