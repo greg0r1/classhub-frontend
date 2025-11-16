@@ -202,16 +202,16 @@ export class CourseFiltersComponent {
     // Ajouter uniquement les filtres avec des valeurs non vides
     if (formValue.startDate) {
       // Le datepicker retourne déjà un objet Date
-      filters.startDate = formValue.startDate as Date;
+      filters.startDate = formValue.startDate as unknown as Date;
       console.log('✅ Date début ajoutée:', formValue.startDate);
     }
     if (formValue.endDate) {
       // Le datepicker retourne déjà un objet Date
-      filters.endDate = formValue.endDate as Date;
+      filters.endDate = formValue.endDate as unknown as Date;
       console.log('✅ Date fin ajoutée:', formValue.endDate);
     }
     if (formValue.courseType && formValue.courseType !== '') {
-      filters.courseType = formValue.courseType as string;
+      filters.courseType = formValue.courseType;
       console.log('✅ Type cours ajouté:', formValue.courseType);
     }
     if (formValue.status && formValue.status !== '') {
