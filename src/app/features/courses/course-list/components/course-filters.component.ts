@@ -105,6 +105,16 @@ interface CourseFiltersForm {
             <strong>Valeurs du formulaire:</strong>
             {{ filterForm.value | json }}
           </small>
+          <br>
+          <small>
+            <strong>Formulaire valide:</strong>
+            {{ filterForm.valid }}
+          </small>
+          <br>
+          <small>
+            <strong>Formulaire disabled:</strong>
+            {{ filterForm.disabled }}
+          </small>
         </div>
       }
     </form>
@@ -185,11 +195,11 @@ export class CourseFiltersComponent {
   readonly production = false; // Changez à true en production
 
   // FormGroup pour les filtres avec typage strict
-  readonly filterForm: FormGroup<CourseFiltersForm> = this.fb.group<CourseFiltersForm>({
-    startDate: this.fb.control<Date | null>(null),
-    endDate: this.fb.control<Date | null>(null),
-    courseType: this.fb.control<string | null>(null),
-    status: this.fb.control<CourseStatus | null>(null),
+  readonly filterForm: FormGroup<CourseFiltersForm> = this.fb.nonNullable.group<CourseFiltersForm>({
+    startDate: this.fb.nonNullable.control<Date | null>(null),
+    endDate: this.fb.nonNullable.control<Date | null>(null),
+    courseType: this.fb.nonNullable.control<string | null>(null),
+    status: this.fb.nonNullable.control<CourseStatus | null>(null),
   });
 
   /**
