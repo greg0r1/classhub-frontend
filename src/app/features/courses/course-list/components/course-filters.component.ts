@@ -1,4 +1,4 @@
-import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,7 +31,6 @@ interface CourseFiltersForm {
     MatNativeDateModule,
     MatIconModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <form [formGroup]="filterForm" class="filters-container">
       <div class="filters-row">

@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,7 +24,6 @@ import { CourseTableComponent } from './components/course-table.component';
     CourseFiltersComponent,
     CourseTableComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="course-list-container">
       <!-- En-tête -->

@@ -4,7 +4,6 @@ import {
   output,
   signal,
   computed,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -31,7 +30,6 @@ import { fr } from 'date-fns/locale';
     MatPaginatorModule,
     MatSortModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="table-container">
       <!-- Table Material -->
