@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { environment } from '@environments/environment';
 import {
   Course,
@@ -60,16 +60,25 @@ export class CourseService {
     console.log('URL finale:', url);
 
     this.loading.set(true);
-    return this.http.get<PaginatedResponse<Course>>(this.apiUrl, { params }).pipe(
+    return this.http.get<Course[]>(this.apiUrl, { params }).pipe(
       tap({
         next: (response) => {
-          console.log('Réponse API:', response);
-          this.loading.set(false);
+          console.log('Réponse API (tableau):', response);
         },
         error: (error) => {
           console.error('Erreur API:', error);
           this.loading.set(false);
         }
+      }),
+      // Transformer le tableau en PaginatedResponse
+      map((courses: Course[]): PaginatedResponse<Course> => {
+        this.loading.set(false);
+        return {
+          data: courses,
+          total: courses.length,
+          page: page,
+          limit: limit
+        };
       })
     );
   }
