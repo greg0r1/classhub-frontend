@@ -21,7 +21,7 @@ import { AttendanceChartComponent } from './components/attendance-chart.componen
       <div class="dashboard-header">
         <h1>Tableau de bord</h1>
         <p class="welcome-text">
-          Bienvenue, {{ authService.currentUser()?.first_name }} {{ authService.currentUser()?.last_name }} !
+          Bienvenue, {{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }} !
         </p>
       </div>
 

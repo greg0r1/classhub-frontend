@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
 import { NotificationCenterComponent } from '@shared/components/notification-center.component';
@@ -19,6 +20,7 @@ import { NotificationCenterComponent } from '@shared/components/notification-cen
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
+    MatDividerModule,
     NotificationCenterComponent
   ],
   template: `
@@ -44,7 +46,7 @@ import { NotificationCenterComponent } from '@shared/components/notification-cen
 
       <mat-menu #userMenu="matMenu">
         <div class="user-menu-header">
-          <p class="user-menu-name">{{ authService.currentUser()?.first_name }} {{ authService.currentUser()?.last_name }}</p>
+          <p class="user-menu-name">{{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}</p>
           <p class="user-menu-email">{{ authService.currentUser()?.email }}</p>
         </div>
         <mat-divider />

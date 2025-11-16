@@ -54,7 +54,7 @@ interface MenuItem {
         <div class="user-info">
           <mat-icon>account_circle</mat-icon>
           <div class="user-details">
-            <p class="user-name">{{ authService.currentUser()?.first_name }} {{ authService.currentUser()?.last_name }}</p>
+            <p class="user-name">{{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}</p>
             <p class="user-role">{{ getRoleLabel() }}</p>
           </div>
         </div>

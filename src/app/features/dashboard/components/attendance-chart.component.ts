@@ -154,14 +154,15 @@ export class AttendanceChartComponent implements OnInit, AfterViewInit, OnDestro
             cornerRadius: 8,
             titleFont: {
               size: 14,
-              weight: '600'
+              weight: 600
             },
             bodyFont: {
               size: 13
             },
             callbacks: {
               label: (context) => {
-                return `${context.parsed.y} présence${context.parsed.y > 1 ? 's' : ''}`;
+                const value = context.parsed.y ?? 0;
+                return `${value} présence${value > 1 ? 's' : ''}`;
               }
             }
           }
