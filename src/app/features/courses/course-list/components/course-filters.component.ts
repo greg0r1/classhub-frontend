@@ -91,23 +91,6 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
         </div>
       </div>
 
-      <!-- Debug info (visible en dev) -->
-      <div class="debug-info">
-        <small>
-          <strong>Valeurs du formulaire:</strong>
-          {{ filterForm.value | json }}
-        </small>
-        <br>
-        <small>
-          <strong>Formulaire valide:</strong>
-          {{ filterForm.valid }}
-        </small>
-        <br>
-        <small>
-          <strong>Formulaire disabled:</strong>
-          {{ filterForm.disabled }}
-        </small>
-      </div>
     </form>
   `,
   styles: [
@@ -140,19 +123,6 @@ import { CourseFilters, CourseStatus } from '@app/shared/models/course.model';
 
       .filter-actions button {
         white-space: nowrap;
-      }
-
-      .debug-info {
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background-color: #fff3cd;
-        border-radius: 4px;
-        border: 1px solid #ffc107;
-      }
-
-      .debug-info small {
-        font-family: monospace;
-        color: #856404;
       }
 
       @media (max-width: 768px) {
